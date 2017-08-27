@@ -18,7 +18,7 @@ A minimal file contains:
 
 ```
 {
-	"baseUrl" : "https://login.xxxxxx.com",
+	"baseUrl" : "https://login.example.com",
 	"appId" : "xxxxxxx"
 }
 ```
@@ -48,7 +48,7 @@ The logged-in user will be:
 	"userId" : "111111",
 	"firstName" : "The",
 	"lastName" : "Admin",
-	"email" : "admin@login.lll",
+	"email" : "admin@example.com",
 	"address" : "",
 	"lang" : "en"
 }

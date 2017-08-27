@@ -24,7 +24,7 @@ public class TestApiApp {
 
         if (args.length != 2) {
             System.out.println("You need to specify the base url and the app id");
-            System.out.println("e.g: https://www.xxxxxx.com xxxxxxxxxxx");
+            System.out.println("e.g: https://login.example.com xxxxxxxx");
             return;
         }
 
@@ -43,14 +43,14 @@ public class TestApiApp {
 
         // Find by email
         System.out.println("Find by email");
-        FoilenLoginUser foilenLoginUser = loginClient.findByEmail("admin@foilen.com");
+        FoilenLoginUser foilenLoginUser = loginClient.findByEmail("admin@example.com");
         System.out.println("-> " + foilenLoginUser);
 
         // Create or find by email
         System.out.println("Create or find by email");
-        foilenLoginUser = loginClient.createOrFindByEmail("admin@foilen.com");
+        foilenLoginUser = loginClient.createOrFindByEmail("admin@example.com");
         System.out.println("-> " + foilenLoginUser);
-        foilenLoginUser = loginClient.createOrFindByEmail(Math.random() + "@foilen.com");
+        foilenLoginUser = loginClient.createOrFindByEmail(Math.random() + "@example.com");
         System.out.println("-> " + foilenLoginUser);
 
         // Create the token
