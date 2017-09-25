@@ -32,7 +32,7 @@ targetCompatibility = 1.8
 
 dependencyManagement {
   imports {
-    mavenBom 'io.spring.platform:platform-bom:Brussels-SR4'
+    mavenBom 'io.spring.platform:platform-bom:Brussels-SR5'
   }
 }
 
@@ -115,4 +115,4 @@ publishing {
   }
 }
 
-task wrapper(type: Wrapper) { gradleVersion = '3.2.1' }
+task wrapper(type: Wrapper) { gradleVersion = '4.1' }

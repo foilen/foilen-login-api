@@ -15,8 +15,8 @@ import javax.net.ssl.SSLContext;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLContextBuilder;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +25,7 @@ import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
-import com.foilen.smalltools.crypt.cert.RSACertificate;
+import com.foilen.smalltools.crypt.spongycastle.cert.RSACertificate;
 import com.foilen.smalltools.tools.JsonTools;
 import com.google.common.base.Strings;
 
@@ -69,7 +69,7 @@ public class LoginClientSpringConfig {
                 KeyStore truststore = KeyStore.getInstance(KeyStore.getDefaultType());
                 truststore.load(null, null);
                 truststore.setCertificateEntry("foilen-login", rsaCertificate.getCertificate());
-                SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(truststore).build();
+                SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(truststore, null).build();
 
                 SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext);
                 HttpClient httpClient = HttpClientBuilder.create().useSystemProperties().setSSLSocketFactory(sslConnectionSocketFactory).build();
