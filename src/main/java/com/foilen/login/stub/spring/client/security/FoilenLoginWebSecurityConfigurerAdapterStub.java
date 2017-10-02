@@ -30,7 +30,8 @@ public class FoilenLoginWebSecurityConfigurerAdapterStub extends WebSecurityConf
     @Value("${login.exclude:}")
     private String loginExcludes;
 
-    private String csrfSalt = SecureRandomTools.randomBase64String(10);
+    @Autowired(required = false)
+    private CsrfTokenRepository upstreamCsrfTokenRepository;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -42,7 +43,10 @@ public class FoilenLoginWebSecurityConfigurerAdapterStub extends WebSecurityConf
         http.addFilterBefore(foilenLoginFilter, AbstractPreAuthenticatedProcessingFilter.class);
 
         // Set the CSRF token
-        CsrfTokenRepository csrfTokenRepository = new CookiesGeneratedCsrfTokenRepository().setSalt(csrfSalt).addCookieNames("foilen_user_id", "foilen_date", "foilen_signature");
+        CsrfTokenRepository csrfTokenRepository = upstreamCsrfTokenRepository;
+        if (csrfTokenRepository == null) {
+            csrfTokenRepository = new CookiesGeneratedCsrfTokenRepository().setSalt(SecureRandomTools.randomBase64String(10)).addCookieNames("foilen_user_id", "foilen_date", "foilen_signature");
+        }
         http.csrf().csrfTokenRepository(csrfTokenRepository);
     }
 
