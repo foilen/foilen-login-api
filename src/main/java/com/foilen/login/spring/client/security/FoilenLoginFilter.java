@@ -20,8 +20,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,12 +27,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import com.foilen.login.api.LoginClient;
 import com.foilen.login.api.to.FoilenLoginToken;
 import com.foilen.login.spring.client.security.cookie.FoilenLoginCookieService;
+import com.foilen.smalltools.tools.AbstractBasics;
 import com.foilen.smalltools.tools.StringTools;
 import com.google.common.base.Strings;
 
-public class FoilenLoginFilter implements Filter {
-
-    private final static Logger logger = LoggerFactory.getLogger(FoilenLoginFilter.class);
+public class FoilenLoginFilter extends AbstractBasics implements Filter {
 
     private FoilenLoginCookieService foilenLoginCookieService;
 
@@ -52,10 +49,12 @@ public class FoilenLoginFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
+        String headerXForwardedProto = httpServletRequest.getHeader("X-Forwarded-Proto");
+        logger.debug("Request URL: {} ; headerXForwardedProto: {}", httpServletRequest.getRequestURL(), headerXForwardedProto);
         boolean httpsSecuredOnly = "https".equals(request.getScheme());
 
         // Check protocol when proxied
-        if (StringTools.safeEquals("https", httpServletRequest.getHeader("X-Forwarded-Proto"))) {
+        if (StringTools.safeEquals("https", headerXForwardedProto)) {
             httpsSecuredOnly = true;
         }
 
@@ -89,6 +88,7 @@ public class FoilenLoginFilter implements Filter {
         FoilenLoginToken foilenLoginToken = loginClient.createToken(getFullUrl(httpServletRequest));
         foilenLoginCookieService.setLogInToken(foilenLoginToken.getToken(), httpServletResponse, httpsSecuredOnly);
         try {
+            logger.debug("Redirect to: {}", foilenLoginToken.getLoginUrl());
             httpServletResponse.sendRedirect(foilenLoginToken.getLoginUrl());
         } catch (IOException e) {
             logger.error("Problem redirecting", e);
@@ -114,6 +114,7 @@ public class FoilenLoginFilter implements Filter {
         if (!Strings.isNullOrEmpty(proto)) {
             fullurl = proto + fullurl.substring(fullurl.indexOf(':'));
         }
+        logger.debug("Full URL: {}", fullurl);
         return fullurl;
     }
 
