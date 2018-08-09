@@ -21,9 +21,9 @@ public interface FoilenLoginCookieService {
 
     String getLogInToken(HttpServletRequest request);
 
-    void removeLoggedInUser(HttpServletResponse response, boolean isHttpOnly);
+    void removeLoggedInUser(HttpServletResponse response, boolean httpsSecuredOnly);
 
-    void setLoggedInUser(String userId, HttpServletResponse response, boolean isHttpOnly);
+    void setLoggedInUser(String userId, HttpServletResponse response, boolean httpsSecuredOnly);
 
-    void setLogInToken(String loginToken, HttpServletResponse response, boolean isHttpOnly);
+    void setLogInToken(String loginToken, HttpServletResponse response, boolean httpsSecuredOnly);
 }

@@ -32,24 +32,25 @@ public class FoilenLoginCookieServiceImpl implements FoilenLoginCookieService {
     private String cookieSignatureSalt;
     private int cookieExpirationDays = 1;
 
-    private void addCookies(String userId, HttpServletResponse response, boolean isHttpOnly) {
+    private void addCookies(String userId, HttpServletResponse response, boolean httpsSecuredOnly) {
         if (userId == null) {
-            response.addCookie(createCookie(cookieUserName, null, isHttpOnly));
-            response.addCookie(createCookie(cookieSignatureName, null, isHttpOnly));
-            response.addCookie(createCookie(cookieDateName, null, isHttpOnly));
+            response.addCookie(createCookie(cookieUserName, null, httpsSecuredOnly));
+            response.addCookie(createCookie(cookieSignatureName, null, httpsSecuredOnly));
+            response.addCookie(createCookie(cookieDateName, null, httpsSecuredOnly));
         } else {
             Date date = new Date();
-            response.addCookie(createCookie(cookieUserName, userId, isHttpOnly));
-            response.addCookie(createCookie(cookieSignatureName, HashSha512.hashString(userId + date.getTime() + cookieSignatureSalt), isHttpOnly));
-            response.addCookie(createCookie(cookieDateName, String.valueOf(date.getTime()), isHttpOnly));
+            response.addCookie(createCookie(cookieUserName, userId, httpsSecuredOnly));
+            response.addCookie(createCookie(cookieSignatureName, HashSha512.hashString(userId + date.getTime() + cookieSignatureSalt), httpsSecuredOnly));
+            response.addCookie(createCookie(cookieDateName, String.valueOf(date.getTime()), httpsSecuredOnly));
         }
     }
 
-    private Cookie createCookie(String name, String value, boolean isHttpOnly) {
+    private Cookie createCookie(String name, String value, boolean httpsSecuredOnly) {
         Cookie cookie = new Cookie(name, value);
-        cookie.setHttpOnly(isHttpOnly);
+        cookie.setHttpOnly(true);
         cookie.setMaxAge(-1);
         cookie.setPath("/");
+        cookie.setSecure(httpsSecuredOnly);
 
         if (value == null) {
             cookie.setMaxAge(0);
@@ -152,8 +153,8 @@ public class FoilenLoginCookieServiceImpl implements FoilenLoginCookieService {
     }
 
     @Override
-    public void removeLoggedInUser(HttpServletResponse response, boolean isHttpOnly) {
-        addCookies(null, response, isHttpOnly);
+    public void removeLoggedInUser(HttpServletResponse response, boolean httpsSecuredOnly) {
+        addCookies(null, response, httpsSecuredOnly);
     }
 
     public void setCookieDateName(String cookieDateName) {
@@ -181,13 +182,13 @@ public class FoilenLoginCookieServiceImpl implements FoilenLoginCookieService {
     }
 
     @Override
-    public void setLoggedInUser(String userId, HttpServletResponse response, boolean isHttpOnly) {
-        addCookies(userId, response, isHttpOnly);
+    public void setLoggedInUser(String userId, HttpServletResponse response, boolean httpsSecuredOnly) {
+        addCookies(userId, response, httpsSecuredOnly);
     }
 
     @Override
-    public void setLogInToken(String loginToken, HttpServletResponse response, boolean isHttpOnly) {
-        response.addCookie(createCookie(cookieLoginToken, loginToken, isHttpOnly));
+    public void setLogInToken(String loginToken, HttpServletResponse response, boolean httpsSecuredOnly) {
+        response.addCookie(createCookie(cookieLoginToken, loginToken, httpsSecuredOnly));
     }
 
 }

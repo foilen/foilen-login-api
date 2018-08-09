@@ -29,6 +29,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import com.foilen.login.api.LoginClient;
 import com.foilen.login.api.to.FoilenLoginToken;
 import com.foilen.login.spring.client.security.cookie.FoilenLoginCookieService;
+import com.foilen.smalltools.tools.StringTools;
 import com.google.common.base.Strings;
 
 public class FoilenLoginFilter implements Filter {
@@ -51,7 +52,12 @@ public class FoilenLoginFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
-        boolean isHttpOnly = "https".equals(request.getScheme());
+        boolean httpsSecuredOnly = "https".equals(request.getScheme());
+
+        // Check protocol when proxied
+        if (StringTools.safeEquals("https", httpServletRequest.getHeader("X-Forwarded-Proto"))) {
+            httpsSecuredOnly = true;
+        }
 
         // Already logged in
         String userId = foilenLoginCookieService.getLoggedInUser(httpServletRequest);
@@ -70,7 +76,7 @@ public class FoilenLoginFilter implements Filter {
             userId = loginClient.findUserIdByToken(loginToken);
             if (!Strings.isNullOrEmpty(userId)) {
                 logger.debug("User {} just logged in", userId);
-                foilenLoginCookieService.setLoggedInUser(userId, httpServletResponse, isHttpOnly);
+                foilenLoginCookieService.setLoggedInUser(userId, httpServletResponse, httpsSecuredOnly);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
                 SecurityContextHolder.getContext().setAuthentication(new FoilenAuthentication(userDetails));
 
@@ -81,7 +87,7 @@ public class FoilenLoginFilter implements Filter {
 
         // Redirect to SSO
         FoilenLoginToken foilenLoginToken = loginClient.createToken(getFullUrl(httpServletRequest));
-        foilenLoginCookieService.setLogInToken(foilenLoginToken.getToken(), httpServletResponse, isHttpOnly);
+        foilenLoginCookieService.setLogInToken(foilenLoginToken.getToken(), httpServletResponse, httpsSecuredOnly);
         try {
             httpServletResponse.sendRedirect(foilenLoginToken.getLoginUrl());
         } catch (IOException e) {
