@@ -27,8 +27,7 @@ repositories {
   mavenCentral()
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 11
 
 dependencyManagement {
   imports {
@@ -68,6 +67,7 @@ dependencies {
   compile 'com.google.guava:guava'
   compile "com.foilen:jl-incubator:$smalltoolsVersion"
   compile "com.foilen:jl-smalltools:$smalltoolsVersion"
+  compile 'javax.annotation:javax.annotation-api:1.3.2'
   compile "javax.servlet:javax.servlet-api"
 }
 
@@ -115,4 +115,3 @@ publishing {
   }
 }
 
-task wrapper(type: Wrapper) { gradleVersion = '4.7' }
