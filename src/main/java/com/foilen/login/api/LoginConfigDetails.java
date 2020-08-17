@@ -1,7 +1,7 @@
 /*
     Foilen Login API
     https://github.com/foilen/foilen-login-api
-    Copyright (c) 2017-2018 Foilen (http://foilen.com)
+    Copyright (c) 2017-2020 Foilen (http://foilen.com)
 
     The MIT License
     http://opensource.org/licenses/MIT
