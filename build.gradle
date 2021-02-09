@@ -37,7 +37,6 @@ dependencies {
   compile "org.slf4j:slf4j-api"
 
   // Spring
-  compile "commons-logging:commons-logging"
   compile "org.apache.httpcomponents:httpclient"
   compile "org.springframework:spring-web"
   compile "org.springframework:spring-context-support"
