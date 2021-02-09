@@ -9,10 +9,8 @@
  */
 package com.foilen.login.spring.client.security;
 
-import java.util.concurrent.TimeUnit;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.guava.GuavaCache;
+import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -25,8 +23,6 @@ import com.foilen.login.spring.client.security.cookie.FoilenLoginCookieService;
 import com.foilen.login.spring.client.security.cookie.FoilenLoginCookieServiceImpl;
 import com.foilen.login.spring.services.FoilenLoginService;
 import com.foilen.login.spring.services.FoilenLoginServiceImpl;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 
 /**
  * Use this config to use the login system with Spring Security.
@@ -67,9 +63,8 @@ public class FoilenLoginSecurityConfig {
 
     @Bean
     public UserCache userCache() throws Exception {
-        Cache<Object, Object> cache = CacheBuilder.newBuilder().maximumSize(1000).expireAfterWrite(10, TimeUnit.MINUTES).build();
-        GuavaCache guavaCache = new GuavaCache("users", cache);
-        return new SpringCacheBasedUserCache(guavaCache);
+        ConcurrentMapCache concurrentMapCache = new ConcurrentMapCache("users");
+        return new SpringCacheBasedUserCache(concurrentMapCache);
     }
 
 }

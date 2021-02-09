@@ -8,7 +8,7 @@ This is the login service API.
 
 You can see the latest version and the Maven and Gradle settings here:
 
-https://bintray.com/foilen/maven/com.foilen:foilen-login-api
+https://repo1.maven.org/maven2/com/foilen/foilen-login-api/
 
 ## HTTPS Client
 
