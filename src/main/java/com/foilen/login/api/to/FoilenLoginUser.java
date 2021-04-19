@@ -49,32 +49,39 @@ public class FoilenLoginUser {
         return isAdmin;
     }
 
-    public void setAddress(String address) {
+    public FoilenLoginUser setAddress(String address) {
         this.address = address;
+        return this;
     }
 
-    public void setAdmin(boolean isAdmin) {
+    public FoilenLoginUser setAdmin(boolean isAdmin) {
         this.isAdmin = isAdmin;
+        return this;
     }
 
-    public void setEmail(String email) {
+    public FoilenLoginUser setEmail(String email) {
         this.email = email;
+        return this;
     }
 
-    public void setFirstName(String firstName) {
+    public FoilenLoginUser setFirstName(String firstName) {
         this.firstName = firstName;
+        return this;
     }
 
-    public void setLang(String lang) {
+    public FoilenLoginUser setLang(String lang) {
         this.lang = lang;
+        return this;
     }
 
-    public void setLastName(String lastName) {
+    public FoilenLoginUser setLastName(String lastName) {
         this.lastName = lastName;
+        return this;
     }
 
-    public void setUserId(String userId) {
+    public FoilenLoginUser setUserId(String userId) {
         this.userId = userId;
+        return this;
     }
 
     @Override

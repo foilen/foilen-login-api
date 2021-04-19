@@ -11,14 +11,17 @@ package com.foilen.login.stub.spring.client.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 import com.foilen.login.spring.services.FoilenLoginService;
+import com.foilen.login.stub.spring.LoginClientSpringStubConfig;
 import com.foilen.login.stub.spring.services.FoilenLoginServiceStub;
 
 /**
  * Use this config to use a fake login system with Spring Security.
  */
 @Configuration
+@Import(LoginClientSpringStubConfig.class)
 public class FoilenLoginSecurityStubConfig {
 
     @Bean
